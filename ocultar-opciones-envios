@@ -1,0 +1,24 @@
+add_filter( 'woocommerce_package_rates', 'hide_shipping_method_based_on_shipping_class', 10, 2 );
+function hide_shipping_method_based_on_shipping_class( $rates, $package )
+{
+    if ( is_admin() && ! defined( 'DOING_AJAX' ) )
+        return;
+
+    // HERE define your shipping classes to find
+    $classes = [69];
+
+    // HERE define the shipping methods you want to hide
+    $method_key_ids = array('flat_rate:17', 'flat_rate:18');
+
+    // Checking in cart items
+    foreach( $package['contents'] as $item ) {
+        // If we find one of the shipping classes
+        if( in_array( $item['data']->get_shipping_class_id(), $classes ) ){
+            foreach( $method_key_ids as $method_key_id ){
+                unset($rates[$method_key_id]); // Remove the targeted methods
+            }
+            break; // Stop the loop
+        }
+    }
+    return $rates;
+}
