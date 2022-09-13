@@ -1,0 +1,12 @@
+/* Códgo para añadir via Code Snippets */
+add_action( 'wpo_wcpdf_after_order_data', 'wpo_wcpdf_tipo_pedido', 10, 2 );
+function wpo_wcpdf_tipo_pedido ($template_type, $order) {
+    if ($template_type == 'invoice') {
+        ?>
+        <tr class="tipo_pedido">
+            <th>Tipo de pedido:</th>
+            <td><?php echo $order->get_meta('tipo_pedido'); ?></td>
+        </tr>
+        <?php
+    }
+}
