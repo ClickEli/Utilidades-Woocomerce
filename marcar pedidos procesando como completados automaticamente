@@ -1,0 +1,11 @@
+add_action( 'woocommerce_order_status_changed', 'auto_complete_orders' );
+
+function auto_complete_orders( $order_id, $old_status, $new_status ) {
+    if ( $new_status == 'processing' && $old_status != 'processing' ) {
+        $order = wc_get_order( $order_id );
+
+        if ( $order->has_status( 'processing' ) ) {
+            $order->update_status( 'completed' );
+        }
+    }
+}
